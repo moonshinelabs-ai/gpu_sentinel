@@ -1,0 +1,21 @@
+# Update these references to your orginzations repos
+sourceUrl = "git@github.com:nharada1/moonshine.git"
+destinationUrl = "git@github.com:moonshinelabs-ai/gpu_sentinel.git"
+
+core.workflow(
+    name = "default",
+    origin = git.origin(
+        url = sourceUrl,
+        ref = "main",
+    ),
+    destination = git.destination(
+        url = destinationUrl,
+        fetch = "main",
+        push = "main",
+    ),
+
+    authoring = authoring.pass_thru("Default email <default@default.com>"),
+    
+    # Copy everything but don't include this file itself.
+    destination_files = glob(["src/public/gpu_sentinel/**"], exclude = ["copy.sky"]),
+)

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gpu_sentinel"
+version = "0.1.2"
+authors = [
+    {name = "Nate Harada", email = "gpu_sentinel@moonshinelabs.ai"},
+]
+description = "Monitor idle GPU usage."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+keywords = ["gpu", "monitor", "utilization"]
+license = {text = "MIT"}
+dependencies = [
+    "gputil",
+]
+
+[project.urls]
+Homepage = "https://github.com/moonshinelabs/gpu_sentinel"
+
+[project.scripts]
+gpu_sentinel = "gpu_sentinel.main:main"
