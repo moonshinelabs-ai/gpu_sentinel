@@ -31,6 +31,35 @@ kill_action: What to do when the kill trigger is hit {end_process,shutdown,reboo
 gpu_devices: Which GPU devices to average (empty for all)
 ```
 
+## API
+If you would prefer to use integrate this package into your own code, we provide a straightforward API to do so.
+
+```python
+from gpu_sentinel import Sentinel, get_gpu_usage
+
+def my_callback_fn():
+    print("Triggered!")
+    exit()
+
+# Create the sentinel that watches the values.
+sentinel = Sentinel(
+    arm_duration=10,
+    arm_threshold=0.7,
+    kill_duration=60,
+    kill_threshold=0.7,
+    kill_fn=my_callback_fn,
+)
+
+while True:
+    # This is the averaged GPU usage of the devices.
+    gpu_usage = get_gpu_usage(device_ids=[0, 1, 2, 3])
+    # Add the GPU usage to the sentinel's next state.
+    sentinel.tick(gpu_usage)
+    # The sentinel operates on ticks, not seconds, so if we want to check every second
+    # we must do the timer ourselves.
+    time.sleep(1)
+```
+
 ## Current Limitations
 
 * To shutdown/reboot the machine, GPU Sentinel requires sudo permissions or sudo-less shutdown.
