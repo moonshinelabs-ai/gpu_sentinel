@@ -7,6 +7,12 @@ If you're automating training your large models in the cloud, cost control is cr
 
 *GPU Sentinel* is a simple tool that will watch your instance and automatically trigger when GPU utilization drops below a certain amount for a period of time. GPU Sentinel can automatically shutdown or reboot the instance, or simply end its own process so you can do an action yourself.
 
+## Installation
+```
+$ pip install gpu_sentinel
+$ gpu_sentinel --help
+```
+
 ## Usage
 The GPU sentinel has two states, IDLE and ARMED.
 
@@ -25,7 +31,7 @@ kill_action: What to do when the kill trigger is hit {end_process,shutdown,reboo
 gpu_devices: Which GPU devices to average (empty for all)
 ```
 
-Constraints:
+## Current Limitations
 
 * To shutdown/reboot the machine, GPU Sentinel requires sudo permissions or sudo-less shutdown.
 * Currently only working on Linux, can add Windows support if there's interest.
