@@ -35,6 +35,7 @@ gpu_devices: Which GPU devices to average (empty for all)
 If you would prefer to use integrate this package into your own code, we provide a straightforward API to do so.
 
 ```python
+import time
 from gpu_sentinel import Sentinel, get_gpu_usage
 
 def my_callback_fn():
