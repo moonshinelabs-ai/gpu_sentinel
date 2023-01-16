@@ -1,7 +1,7 @@
 import argparse
-from ast import parse
 import os
 import time
+from ast import parse
 from statistics import mean
 from typing import Callable, Optional, Sequence
 
@@ -92,9 +92,17 @@ def main():
     args = parse_args()
     if args.kill_action in ["shutdown", "reboot"]:
         if os.geteuid() != 0:
-            exit("This program requires sudo if it is going to shutdown the computer.")
-
-    print(f"Starting GPU Sentinel, will arm once average GPU usage is at least {args.arm_threshold:.0%} for {args.arm_duration} seconds")
+            print(
+                "WARNING: This program requires sudo if it is going to shutdown the computer.\n"
+                "If you are have not setup your environment appropriately, the shutdown\n"
+                "command will request a password and may fail to shutdown your machine.\n"
+                "\n"
+                "We suggest configuring your machine to not require a sudo password for\n"
+                "the commands you want to run. See https://askubuntu.com/a/168885\n"
+            )
+    print(
+        f"Starting GPU Sentinel, will arm once average GPU usage is at least {args.arm_threshold:.0%} for {args.arm_duration} seconds"
+    )
     if args.gpu_devices is None:
         print(f"Monitoring all GPUs on the system")
     else:
@@ -121,10 +129,13 @@ def main():
         sentinel.tick(gpu_usage)
 
         if sentinel.state == State.ARMED and show_arm_warning:
-            print(f"GPU Sentinel is armed, will \'{args.kill_action}\' when values drop below {args.kill_threshold:.0%} for {args.kill_duration} seconds")
+            print(
+                f"GPU Sentinel is armed, will '{args.kill_action}' when values drop below {args.kill_threshold:.0%} for {args.kill_duration} seconds"
+            )
             show_arm_warning = False
 
         time.sleep(TICK_TIME_S)
+
 
 if __name__ == "__main__":
     main()
