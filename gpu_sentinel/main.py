@@ -7,7 +7,7 @@ from typing import Callable, Optional, Sequence
 
 import GPUtil  # type: ignore
 
-from .sentinel import Sentinel, State
+from .sentinel import Sentinel, SentinelState
 
 TICK_TIME_S = 1
 
@@ -32,7 +32,18 @@ def create_kill_fn(action: str) -> Callable:
 
 
 def get_gpu_usage(device_ids: Optional[Sequence[int]]) -> float:
-    """Get the avg GPU usage across devices."""
+    """Get the avg GPU usage across devices.
+
+    This function does not validate the GPU device ID list, so you can
+    include GPUs that aren't actually present in the device ID list and
+    it will still work.
+
+    Args:
+        device_ids: An optional list of device ids to average over.
+
+    Returns:
+        average_load: The mean of all the GPU loads sampled.
+    """
     gpu_usage = []
 
     devices = GPUtil.getGPUs()
@@ -128,7 +139,7 @@ def main():
         gpu_usage = get_gpu_usage(device_ids=gpu_device_ids)
         sentinel.tick(gpu_usage)
 
-        if sentinel.state == State.ARMED and show_arm_warning:
+        if sentinel.state == SentinelState.ARMED and show_arm_warning:
             print(
                 f"GPU Sentinel is armed, will '{args.kill_action}' when values drop below {args.kill_threshold:.0%} for {args.kill_duration} seconds"
             )

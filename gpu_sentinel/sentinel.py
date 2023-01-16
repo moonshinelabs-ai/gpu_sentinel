@@ -2,12 +2,14 @@ import enum
 from typing import Callable
 
 
-class State(enum.Enum):
+class SentinelState(enum.Enum):
     SAFE = 0
     ARMED = 1
 
 
 class Sentinel:
+    """The Sentinel object that watches a stream of incoming values."""
+
     def __init__(
         self,
         arm_duration: int,
@@ -45,12 +47,16 @@ class Sentinel:
         self.kill_threshold = kill_threshold
         self.kill_fn = kill_fn
 
-        self.state = State.SAFE
+        self.state = SentinelState.SAFE
         self.seconds_to_transition = self.arm_duration
 
     def tick(self, current_value: float):
-        """Run this to advance the system."""
-        if self.state is State.SAFE:
+        """Run this to advance the system.
+
+        Args:
+            current_value: The next value to track.
+        """
+        if self.state is SentinelState.SAFE:
             # If the new value exceeds the threshold, continue counting down.
             # Otherwise reset the timer.
             if current_value > self.arm_threshold:
@@ -60,9 +66,9 @@ class Sentinel:
 
             # Check if we should arm.
             if self.seconds_to_transition <= 0:
-                self.state = State.ARMED
+                self.state = SentinelState.ARMED
                 self.seconds_to_transition = self.kill_duration
-        elif self.state is State.ARMED:
+        elif self.state is SentinelState.ARMED:
             # If the new value is lower than the threshold, continue counting down.
             # Otherwise reset the timer.
             if current_value < self.kill_threshold:
