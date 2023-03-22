@@ -3,22 +3,35 @@
 *A Moonshine Labs tool*
 
 ## Overview
-If you're automating training your large models in the cloud, cost control is critical. How many times have you accidentally left an expensive GPU instance running when the underlying job had crashed, costing you money or capacity with no benefit?
 
-*GPU Sentinel* is a simple tool that will watch your instance and automatically trigger when GPU utilization drops below a certain amount for a period of time. GPU Sentinel can automatically shutdown or reboot the instance, or simply end its own process so you can do an action yourself.
+If you're automating training your large models in the cloud, cost control is critical.
+How many times have you accidentally left an expensive GPU instance running when the
+underlying job had crashed, costing you money or capacity with no benefit?
+
+*GPU Sentinel* is a simple tool that will watch your instance and automatically trigger
+when GPU utilization drops below a certain amount for a period of time. GPU Sentinel can
+automatically shutdown or reboot the instance, or simply end its own process so you can
+do an action yourself.
 
 ## Installation
+
 ```
 $ pip install gpu_sentinel
 $ gpu_sentinel --help
 ```
 
 ## Usage
+
 The GPU sentinel has two states, IDLE and ARMED.
 
-When you start the program, it will wait for the GPU to be above a certain utilization for a set amount of time. Once this condition is met, the sentinel will be ARMED. This will let you set the sentinel at any point, and it will only trigger once the GPU has been running for a while.
+When you start the program, it will wait for the GPU to be above a certain utilization
+for a set amount of time. Once this condition is met, the sentinel will be ARMED. This
+will let you set the sentinel at any point, and it will only trigger once the GPU has
+been running for a while.
 
-Once ARMED, the sentinel will wait for the GPU utilization to drop below a certain threshold for a set amount of time. Once this condition is met, the `kill_action` will occur immediately.
+Once ARMED, the sentinel will wait for the GPU utilization to drop below a certain
+threshold for a set amount of time. Once this condition is met, the `kill_action` will
+occur immediately.
 
 Options:
 
@@ -32,7 +45,9 @@ gpu_devices: Which GPU devices to average (empty for all)
 ```
 
 ## API
-If you would prefer to use integrate this package into your own code, we provide a straightforward API to do so.
+
+If you would prefer to use integrate this package into your own code, we provide a
+straightforward API to do so.
 
 ```python
 import time
@@ -63,5 +78,6 @@ while True:
 
 ## Current Limitations
 
-* To shutdown/reboot the machine, GPU Sentinel requires sudo permissions or sudo-less shutdown.
-* Currently only working on Linux, can add Windows support if there's interest.
+- To shutdown/reboot the machine, GPU Sentinel requires sudo permissions or sudo-less
+  shutdown.
+- Currently only working on Linux, can add Windows support if there's interest.
